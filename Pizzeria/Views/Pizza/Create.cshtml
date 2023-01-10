@@ -1,7 +1,24 @@
 ﻿
 @{
     ViewData["Title"] = "Create";
+    @model Pizza
 }
 
-<h1>Create</h1>
-
+<div class="container">
+    <form asp-controller="Pizza" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="mb-3">
+            <label>Titolo:</label>
+            <input asp-for="Name" type="text" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label>Descrizione:</label>
+            <textarea asp-for="Description" class="d-block w-100" rows="8"></textarea>
+        </div>
+        <div class="mb-3">
+            <label>Url Immagine:</label>
+            <input asp-for="Image" type="text" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Salva</button>
+    </form>
+</div>

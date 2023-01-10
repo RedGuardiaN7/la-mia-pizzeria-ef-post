@@ -15,10 +15,10 @@
 
     @foreach(Pizza pizza in Model)
     {
-                <div class="col card mx-2 mb-3 p-0 shadow border-light" style="min-width: 18rem;">
+                <div class="col card mx-2 mb-3 p-0 shadow border-light" style="min-width: 18rem; max-width: 20rem;">
         <img max-width: 300px src="@pizza.Image" alt="@pizza.Name">
-        <div class="card-body bg-primary">
-                    <h4 class="fw-bold bg-primary text-white pt-1">@pizza.Name</h4>
+                    <div class="card-body bg-primary">
+                        <h4 class="fw-bold bg-primary text-white pt-1">@pizza.Name</h4>
                 </div>
         <ul class="list-group list-group-flush">
                     <li class="list-group-item py-4">
@@ -27,7 +27,7 @@
 
                     <li class="list-group-item lh-lg">
                         <button type="button" class="btn btn-warning">7,00€</button>
-                        <a class="btn btn-primary" href="@Url.Action("Details", "Pizza", new { id = pizza.Id } )" role="button">Dettagli</a>
+                        <a class="btn btn-primary" href="@Url.Action("Details", new { id = pizza.Id } )" role="button">Dettagli</a>
                     </li>
                 </ul>
         </div>
