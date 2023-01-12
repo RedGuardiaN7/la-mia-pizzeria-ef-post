@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.SqlServer.Server;
 using Pizzeria.Database;
 using Pizzeria.Models;
 
@@ -37,6 +38,23 @@ namespace Pizzeria.Controllers
         {
             return View("Create");
         }
+        [HttpGet]
+        public ActionResult Edit(int id) 
+        { 
+            using (PizzaContext db = new PizzaContext())
+            {
+                Pizza PizzaToEdit = db.Pizzas
+                    .Where(DbPizza => DbPizza.Id == id)
+                    .FirstOrDefault();
+
+                if (PizzaToEdit != null)
+                {
+                    return View(PizzaToEdit);
+                }
+
+                return NotFound("La pizza che cerchi di modificare non esiste!");
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -55,5 +73,35 @@ namespace Pizzeria.Controllers
 
             return RedirectToAction("Index");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Pizza formData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", formData);
+            }
+            using (PizzaContext db = new PizzaContext())
+            {
+                Pizza PizzaToEdit = db.Pizzas
+                    .Where(DbPizza => DbPizza.Id == id)
+                    .FirstOrDefault();
+                if (PizzaToEdit != null)
+                {
+                    PizzaToEdit.Name = formData.Name;
+                    PizzaToEdit.Description = formData.Description;
+                    PizzaToEdit.Image = formData.Image;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+                return RedirectToAction("Index");
+                
+            }
+        }
+            
     }
 }
