@@ -56,6 +56,24 @@ namespace Pizzeria.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            using (PizzaContext db = new PizzaContext())
+            {
+                Pizza PizzaToDelete = db.Pizzas
+                    .Where(DbPizza => DbPizza.Id == id)
+                    .FirstOrDefault();
+
+                if (PizzaToDelete != null)
+                {
+                    return View(PizzaToDelete);
+                }
+
+                return NotFound("La pizza che cerchi di eliminare non esiste!");
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Pizza formData)
@@ -100,6 +118,28 @@ namespace Pizzeria.Controllers
 
                 return RedirectToAction("Index");
                 
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id, Pizza formdata) 
+        {
+            using (PizzaContext db = new PizzaContext())
+            {
+                Pizza PizzaToDelete = db.Pizzas
+                    .Where(DbPizza => DbPizza.Id == id)
+                    .FirstOrDefault();
+                if (PizzaToDelete != null)
+                {
+                    db.Pizzas.Remove(PizzaToDelete);
+                    db.SaveChanges() ;
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
         }
             
